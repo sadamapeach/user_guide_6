@@ -401,7 +401,7 @@ st.markdown(
 )
 
 # DataFrame
-columns = ["ROUND", "VENDOR", "Scope", "RPICE"]
+columns = ["ROUND", "VENDOR", "Scope", "PRICE"]
 data = [
     ["Round 1", "Vendor A", "Site Survey", 15000],
     ["Round 1", "Vendor A", "DG Dismantle", 55000],
@@ -465,7 +465,7 @@ data = [
 ]
 df_merge = pd.DataFrame(data, columns=columns)
 
-num_cols = ["Price (IDR)"]
+num_cols = ["PRICE"]
 df_merge_styled = (
     df_merge.style
     .format({col: format_rupiah for col in num_cols})
