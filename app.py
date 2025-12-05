@@ -85,13 +85,13 @@ st.markdown("#### Input Structure")
 st.markdown(
     """
         <div style="text-align: justify; font-size: 15px; margin-bottom: 20px;">
-            The input file required for this menu should be a <span style="color: #FF69B4; font-weight: 500;">
-            multi-file containing multiple sheets</span>, in eather <span style="background:#C6EFCE; 
-            padding:1px 4px; border-radius:6px; font-weight:600; font-size: 0.75rem; color: black">.xlsx</span> 
-            or <span style="background:#FFEB9C; padding:2px 4px; border-radius:6px; font-weight:600; 
-            font-size: 0.75rem; color: black">.xls</span> format. The file name represents the <span style=
-            "font-weight: bold;">"ROUND"</span>, while the sheet names represent the vendor name. Below
-            is the table structure for each sheet.
+            The input file required for this menu should be a 
+            <span style="color: #FF69B4; font-weight: 500;">multi-file containing multiple sheets</span>, in eather 
+            <span style="background:#C6EFCE; padding:1px 4px; border-radius:6px; font-weight:600; font-size: 0.75rem; color: black">.xlsx</span> or 
+            <span style="background:#FFEB9C; padding:2px 4px; border-radius:6px; font-weight:600; font-size: 0.75rem; color: black">.xls</span> format. 
+            The file name represents the 
+            <span style="font-weight: bold;">"ROUND"</span>, while the sheet names represent the vendor name. 
+            Below is the table structure for each sheet.
         </div>
     """,
     unsafe_allow_html=True
@@ -135,13 +135,13 @@ st.markdown(
 st.markdown(
     """
         <div style="text-align: justify; font-size: 15px; margin-bottom: 20px">
-            The system accommodates a <span style="font-weight: bold;">dynamic table</span>, 
-            but it is <span style="color: #FF69B4; font-weight: 500;">ONLY APPLICABLE</span> 
-            to <span style="color: #FF69B4; font-weight: 500;">non-numeric columns</span>.
-            Unlike other menus, <span style="background:#FFCB09; padding:2px 4px; border-radius:6px; 
-            font-weight:600; font-size: 0.75rem; color: black">NUMERIC COLUMN</span> 
-            is permitted <span style="color: #ED1C24; font-weight: bold;">ONLY ONCE</span> and <span 
-            style="color: #ED1C24; font-weight: bold;">MUST</span> be placed in the last column.
+            The system accommodates a 
+            <span style="font-weight: bold;">dynamic table</span>, but it is 
+            <span style="color: #FF69B4; font-weight: 500;">ONLY APPLICABLE</span> to 
+            <span style="color: #FF69B4; font-weight: 500;">non-numeric columns</span>. Unlike other menus, 
+            <span style="background:#FFCB09; padding:2px 4px; border-radius:6px; font-weight:600; font-size: 0.75rem; color: black">NUMERIC COLUMN</span> is permitted 
+            <span style="color: #ED1C24; font-weight: bold;">ONLY ONCE</span> and 
+            <span style="color: #ED1C24; font-weight: bold;">MUST</span> be placed in the last column.
             Also, users have the freedom to name the columns as they wish. The system logic relies on 
             <span style="font-weight: bold;">column indices</span>, not specific column names.
         </div>
@@ -168,11 +168,11 @@ st.markdown("**:red-badge[1. MULTIPLE FILE NAME]**")
 st.markdown(
     """
         <div style="text-align: justify; font-size: 15px; margin-bottom: 15px; margin-top: -10px">
-            This menu operates using <span style="color: #FF69B4; font-weight: 500;">multiple files</span>, 
-            where each filename is extracted and used as the value for the <span style="background:#FFCB09; 
-            padding:2px 4px; border-radius:6px; font-weight:600; font-size: 0.75rem; color: black">ROUND</span>
-            column. Therefore, please ensure that each filename correctly represents its corresponding round 
-            and <span style="color: #ED1C24; font-weight: bold;">AVOID</span> using ambiguous names.
+            This menu operates using 
+            <span style="color: #FF69B4; font-weight: 500;">multiple files</span>, where each filename is extracted and used as the value for the 
+            <span style="background:#FFCB09; padding:2px 4px; border-radius:6px; font-weight:600; font-size: 0.75rem; color: black">ROUND</span> column. 
+            Therefore, please ensure that each filename correctly represents its corresponding round and 
+            <span style="color: #ED1C24; font-weight: bold;">AVOID</span> using ambiguous names.
         </div>
     """,
     unsafe_allow_html=True
@@ -181,8 +181,9 @@ st.markdown(
 st.markdown(
     """
         <div style="text-align: justify; font-size: 15px; margin-bottom: 10px;">
-            Because the filenames are parsed into a non-numeric column, the system uses <span style="color: #FF69B4; 
-            font-weight: 700;">REGEX</span> to detect and sort the rounds in the correct order. For example:
+            Because the filenames are parsed into a non-numeric column, the system uses 
+            <span style="color: #FF69B4; font-weight: 700;">REGEX</span> to detect and sort the rounds in the correct order. 
+            For example:
         </div>
     """,
     unsafe_allow_html=True
@@ -340,6 +341,53 @@ st.markdown(
     unsafe_allow_html=True
 )
 
+st.markdown("**:violet-badge[5. TOTAL ROW]**")
+st.markdown(
+    """
+        <div style="text-align: justify; font-size: 15px; margin-bottom: 10px; margin-top:-10px;">
+            You are not allowed to add a 
+            <span style="font-weight: 700;">TOTAL</span> row at the bottom of the table! 
+            Please refer to the example table below:
+        </div>
+    """,
+    unsafe_allow_html=True
+)
+
+# DataFrame
+columns = ["Desc", "Category", "UoM", "PRICE"]
+data = [
+    ["Optical Cable", "Non-Services Area & Material", "M", "3.600"],
+    ["Cross Connect", "Non-Services Area & Material", "Link", "29.800"],
+    ["TOTAL", "", "", "33.400"],
+]
+df = pd.DataFrame(data, columns=columns)
+
+def red_highlight(row):
+    if any(str(x).strip().upper() == "TOTAL" for x in row):
+        return [
+            "background-color: #FFE5E5; color: #D00000; font-weight: 700;"
+        ] * len(row)
+    return [""] * len(row)
+
+
+df_styled = df.style.apply(red_highlight, axis=1)
+
+st.dataframe(df_styled, hide_index=True)
+
+st.markdown(
+    """
+        <div style="text-align: justify; font-size: 15px; margin-bottom: 20px; margin-top: -5px;">
+            The table above is an 
+            <span style="color: #FF69B4; font-weight: 700;">incorrect example</span> and is 
+            <span style="color: #FF69B4; font-weight: 700;">not permitted</span>! 
+            The total row is generated automatically during
+            <span style="font-weight: 700;">MERGE DATA</span> — 
+            do not add one manually, or the system will treat it as a regular row and include it in the calculations.
+        </div>
+    """,
+    unsafe_allow_html=True
+)
+
 st.divider()
 
 st.markdown("#### What is Displayed?")
@@ -372,7 +420,7 @@ def release_the_balloons():
 st.download_button(
     label="Dummy Dataset",
     data=zip_buffer,
-    file_name="dummy_dataset.zip",
+    file_name="Dummy Dataset - UPL Comparison Round by Round.zip",
     mime="application/zip",
     on_click=release_the_balloons,
     type="primary",
@@ -590,7 +638,9 @@ data = [
     ["VENDOR C", "Site Survey", 15050,15000,14900,14850,-200,"-1.3%","Consistently Down",79.0569,"1.3%"],
     ["VENDOR C", "TOTAL",73150,73100,72875,72825,"","","","",""],
 ]
+
 df_pmove = pd.DataFrame(data, columns=columns)
+df_pmove = df_pmove.map(lambda x: None if x == "" else x)
 
 num_cols = ["Round 1", "Round 2", "Round 3", "Round 4", "PRICE REDUCTION (VALUE)", "STANDARD DEVIATION"]
 df_pmove_styled = (
@@ -800,7 +850,7 @@ if selected_sheets:
     st.download_button(
         label="Download",
         data=excel_bytes,
-        file_name="super botton.xlsx",
+        file_name="Super Botton - UPL Comparison Round by Round.xlsx",
         mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
         type="primary",
         use_container_width=True,
