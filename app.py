@@ -33,17 +33,15 @@ def highlight_total(row):
     else:
         return [""] * len(row)
     
-def highlight_1st_2nd_vendor(row, columns):
+def highlight_1st_2nd(row, columns):
     styles = [""] * len(columns)
     first_vendor = row.get("1st Vendor")
     second_vendor = row.get("2nd Vendor")
 
     for i, col in enumerate(columns):
         if col == first_vendor:
-            # styles[i] = "background-color: #f8c8dc; color: #7a1f47;"
             styles[i] = "background-color: #C6EFCE; color: #006100;"
         elif col == second_vendor:
-            # styles[i] = "background-color: #d7c6f3; color: #402e72;"
             styles[i] = "background-color: #FFEB9C; color: #9C6500;"
     return styles
 
@@ -579,29 +577,36 @@ st.markdown(
 # DataFrame
 columns = ["ROUND", "Scope", "VENDOR A", "VENDOR B", "VENDOR C", "1st Lowest", "1st Vendor", "2nd Lowest", "2nd Vendor", "Gap 1 to 2 (%)", "Median Price", "Vendor A to Median (%)", "Vendor B to Median (%)", "Vendor C to Median (%)"]
 data = [
-    ["ROUND 1", "Site Survey", 15000, 14800, 15050, 14800, "VENDOR B", 15000, "VENDOR A", "1.4%", 15000, "+0.0%", "-1.3%", "+0.3%"],
-    ["ROUND 1", "DG Dismantle", 55000, 55100, 54900, 54900, "VENDOR C", 55000, "VENDOR A", "0.2%", 55000, "+0.0%", "+0.2%", "-0.2%"],
-    ["ROUND 1", "AirCon Dismantle", 3230, 3240, 3200, 3200, "VENDOR C", 3230, "VENDOR A", "0.9%", 3230, "+0.0%", "+0.3%", "-0.9%"],
+    ["ROUND 1", "Site Survey", 15000, 14800, 15050, 14800, "VENDOR B", 15000, "VENDOR A", 1.4, 15000, 0, -1.3, 0.3],
+    ["ROUND 1", "DG Dismantle", 55000, 55100, 54900, 54900, "VENDOR C", 55000, "VENDOR A", 0.2, 55000, 0, 0.2, 0.2],
+    ["ROUND 1", "AirCon Dismantle", 3230, 3240, 3200, 3200, "VENDOR C", 3230, "VENDOR A", 0.9, 3230, 0, 0.3, 0.9],
 
-    ["ROUND 2", "Site Survey", 14950, 14800, 15000, 14800, "VENDOR B", 14950, "VENDOR A", "1.0%", 14950, "+0.0%", "-1.0%", "+0.3%"],
-    ["ROUND 2", "DG Dismantle", 54980, 55000, 54900, 54900, "VENDOR C", 54980, "VENDOR A", "0.1%", 54980, "+0.0%", "+0.0%", "-0.1%"],
-    ["ROUND 2", "AirCon Dismantle", 3200, 3240, 3200, 3200, "VENDOR A", 3240, "VENDOR B", "1.2%", 3200, "+0.0%", "+1.2%", "+0.0%"],
+    ["ROUND 2", "Site Survey", 14950, 14800, 15000, 14800, "VENDOR B", 14950, "VENDOR A", 1, 14950, 0, -1, 0.3],
+    ["ROUND 2", "DG Dismantle", 54980, 55000, 54900, 54900, "VENDOR C", 54980, "VENDOR A", 0.1, 54980, 0, 0, -0.1],
+    ["ROUND 2", "AirCon Dismantle", 3200, 3240, 3200, 3200, "VENDOR A", 3240, "VENDOR B", 1.2, 3200, 0, 1.2, 0],
 
-    ["ROUND 3", "Site Survey", 14900, 14750, 14900, 14750 ,"VENDOR B", 14900, "VENDOR A", "1.0%", 14900, "+0.0%", "-1.0%", "+0.0%"],
-    ["ROUND 3", "DG Dismantle", 54950, 54900, 54800, 54800 ,"VENDOR C", 54900, "VENDOR B", "0.2%", 54900, "+0.1%", "+0.0%", "-0.2%"],
-    ["ROUND 3", "AirCon Dismantle", 3150, 3220, 3175, 3150, "VENDOR A", 3175, "VENDOR C", "0.8%", 3175, "-0.8%", "+1.4%", "+0.0%"],
+    ["ROUND 3", "Site Survey", 14900, 14750, 14900, 14750 ,"VENDOR B", 14900, "VENDOR A", 1, 14900, 0, -1, 0],
+    ["ROUND 3", "DG Dismantle", 54950, 54900, 54800, 54800 ,"VENDOR C", 54900, "VENDOR B", 0.2, 54900, 0.1, 0, -0.2],
+    ["ROUND 3", "AirCon Dismantle", 3150, 3220, 3175, 3150, "VENDOR A", 3175, "VENDOR C", 0.8, 3175, -0.8, 1.4, 0],
 
-    ["ROUND 4", "Site Survey", 14900, 14750, 14850, 14750 ,"VENDOR B", 14850,"VENDOR C", "0.7%", 14850, "+0.3%", "-0.7%", "+0.0%"],
-    ["ROUND 4", "DG Dismantle", 54900, 54900, 54800, 54800 ,"VENDOR C", 54900,"VENDOR A", "0.2%", 54900, "+0.0%", "+0.0%", "-0.2%"],
-    ["ROUND 4", "AirCon Dismantle", 3150, 3200, 3175, 3150, "VENDOR A", 3175, "VENDOR C", "0.8%", 3175, "-0.8%", "+0.8%", "+0.0%"],
+    ["ROUND 4", "Site Survey", 14900, 14750, 14850, 14750 ,"VENDOR B", 14850,"VENDOR C", 0.7, 14850, 0.3, 0.7, 0],
+    ["ROUND 4", "DG Dismantle", 54900, 54900, 54800, 54800 ,"VENDOR C", 54900,"VENDOR A", 0.2, 54900, 0, 0, -0.2],
+    ["ROUND 4", "AirCon Dismantle", 3150, 3200, 3175, 3150, "VENDOR A", 3175, "VENDOR C", 0.8, 3175, -0.8, 0.8, 0],
 ]
 df_analysis = pd.DataFrame(data, columns=columns)
 
 num_cols = ["VENDOR A", "VENDOR B", "VENDOR C", "1st Lowest", "2nd Lowest", "Median Price"]
+format_dic = {col: format_rupiah for col in num_cols}
+format_dic.update({"Gap 1 to 2 (%)": "{:.1f}%"})
+
+vendor_cols = ["Vendor A", "Vendor B", "Vendor C"]
+for v in vendor_cols:
+    format_dic[f"{v} to Median (%)"] = "{:+.1f}%"
+
 df_analysis_styled = (
     df_analysis.style
-    .format({col: format_rupiah for col in num_cols})
-    .apply(lambda row: highlight_1st_2nd_vendor(row, df_analysis.columns), axis=1)
+    .format(format_dic)
+    .apply(lambda row: highlight_1st_2nd(row, df_analysis.columns), axis=1)
 )
 
 st.dataframe(df_analysis_styled, hide_index=True)
@@ -623,19 +628,19 @@ st.markdown(
 # DataFrame
 columns = ["VENDOR", "Scope", "Round 1", "Round 2", "Round 3", "Round 4", "PRICE REDUCTION (VALUE)", "PRICE REDUCTION (%)", "PRICE TREND", "STANDARD DEVIATION", "PRICE STABILITY INDEX (%)"]
 data = [
-    ["VENDOR A", "AirCon Dismantle", 3230,3200,3150,3150,-80,"-2.5%","Fluctuating",34.187,"2.5%"],
-    ["VENDOR A", "DG Dismantle", 55000,54980,54950,54900,-100,"-0.2%","Consistently Down",37.6663,"0.2%"],
-    ["VENDOR A", "Site Survey", 15000,14950,14900,14900,-100,"-0.7%","Fluctuating",41.4578,"0.7%"],
+    ["VENDOR A", "AirCon Dismantle", 3230,3200,3150,3150,-80,-2.5,"Fluctuating",34.187,2.5],
+    ["VENDOR A", "DG Dismantle", 55000,54980,54950,54900,-100,-0.2,"Consistently Down",37.6663,0.2],
+    ["VENDOR A", "Site Survey", 15000,14950,14900,14900,-100,-0.7,"Fluctuating",41.4578,0.7],
     ["VENDOR A", "TOTAL", 73230,73130,73000,72950,"","","","",""],
 
-    ["VENDOR B", "AirCon Dismantle", 3240,3240,3220,3200,-40,"-1.2%","Fluctuating",16.5831,"1.2%"],
-    ["VENDOR B", "DG Dismantle", 55100,55000,54900,54900,-200,"-0.4%","Fluctuating",82.9156,"0.4%"],
-    ["VENDOR B", "Site Survey", 14800,14800,14750,14750,-50,"-0.3%","Fluctuating",25,"0.3%"],
+    ["VENDOR B", "AirCon Dismantle", 3240,3240,3220,3200,-40,-1.2,"Fluctuating",16.5831,1.2],
+    ["VENDOR B", "DG Dismantle", 55100,55000,54900,54900,-200,-0.4,"Fluctuating",82.9156,0.4],
+    ["VENDOR B", "Site Survey", 14800,14800,14750,14750,-50,-0.3,"Fluctuating",25,0.3],
     ["VENDOR B", "TOTAL", 73140,73040,72870,72850,"","","","",""],
 
-    ["VENDOR C", "AirCon Dismantle", 3200,3200,3175,3175,-25,"-0.8%","Fluctuating",12.5,"0.8%"],
-    ["VENDOR C", "DG Dismantle", 54900,54900,54800,54800,-100,"-0.2%","Fluctuating",50,"0.2%"],
-    ["VENDOR C", "Site Survey", 15050,15000,14900,14850,-200,"-1.3%","Consistently Down",79.0569,"1.3%"],
+    ["VENDOR C", "AirCon Dismantle", 3200,3200,3175,3175,-25,-0.8,"Fluctuating",12.5,0.8],
+    ["VENDOR C", "DG Dismantle", 54900,54900,54800,54800,-100,-0.2,"Fluctuating",50,0.2],
+    ["VENDOR C", "Site Survey", 15050,15000,14900,14850,-200,-1.3,"Consistently Down",79.0569,1.3],
     ["VENDOR C", "TOTAL",73150,73100,72875,72825,"","","","",""],
 ]
 
@@ -643,9 +648,15 @@ df_pmove = pd.DataFrame(data, columns=columns)
 df_pmove = df_pmove.map(lambda x: None if x == "" else x)
 
 num_cols = ["Round 1", "Round 2", "Round 3", "Round 4", "PRICE REDUCTION (VALUE)", "STANDARD DEVIATION"]
+format_dict = {col: format_rupiah for col in num_cols}
+format_dict.update({
+    "PRICE REDUCTION (%)": "{:+.1f}%",
+    "PRICE STABILITY INDEX (%)": "{:.1f}%"
+})
+
 df_pmove_styled = (
     df_pmove.style
-    .format({col: format_rupiah for col in num_cols})
+    .format(format_dict)
     .apply(highlight_total, axis=1)
 )
 
@@ -740,108 +751,118 @@ selected_sheets = st.multiselect(
 
 # Fungsi "Super Button" & Formatting
 def generate_multi_sheet_excel(selected_sheets, df_dict):
-    """
-    Buat Excel multi-sheet dengan formatting:
-    - Sheet 'Bid & Price Analysis' → highlight 1st & 2nd vendor
-    - Sheet lainnya → highlight TOTAL
-    """
+
     output = BytesIO()
 
     with pd.ExcelWriter(output, engine="xlsxwriter") as writer:
         for sheet in selected_sheets:
-            df = df_dict[sheet].copy()
+            df_raw = df_dict[sheet].copy()
 
-            # Identifikasi num cols
-            df_to_write = df.copy()
+            # ===== COERCE NUMERIC SAFELY =====
+            df = df_raw.copy()
             numeric_cols = []
 
             for col in df.columns:
-                # TRY CONVERT -> kalo gagal, tetap pakai kolom asli
-                try:
-                    coerced = pd.to_numeric(df[col])
-                except Exception:
-                    coerced = df[col]
-
-                # Check apakah kolom benar-benar numerik
-                coerced_check = pd.to_numeric(df[col], errors="coerce")
-
-                if coerced_check.notna().any():
+                coerced = pd.to_numeric(df[col], errors="coerce")
+                if coerced.notna().any():
+                    df[col] = coerced
                     numeric_cols.append(col)
-                    df_to_write[col] = coerced_check
-                else:
-                    df_to_write[col] = df[col]
 
-            # vendor columns (hanya untuk Bid & Price Analysis)
-            vendor_cols = [c for c in numeric_cols] if sheet == "Bid & Price Analysis" else []
+            pct_cols = [c for c in df.columns if "%" in c]
 
-            # Tulis dataframe ke excel 
-            df_to_write.to_excel(writer, index=False, sheet_name=sheet)
+            df.to_excel(writer, index=False, sheet_name=sheet)
             workbook  = writer.book
             worksheet = writer.sheets[sheet]
 
-            # Format
+            # ===== FORMAT =====
             fmt_rupiah = workbook.add_format({"num_format": "#,##0"})
-            fmt_pct    = workbook.add_format({"num_format": '#,##0.0"%"'})
+            fmt_pct    = workbook.add_format({'num_format': '#,##0.0"%"'})
 
-            fmt_total  = workbook.add_format({
+            fmt_total = workbook.add_format({
                 "bold": True,
                 "bg_color": "#D9EAD3",
                 "font_color": "#1A5E20",
                 "num_format": "#,##0"
             })
 
-            fmt_first  = workbook.add_format({"bg_color": "#C6EFCE", "num_format": "#,##0"})
-            fmt_second = workbook.add_format({"bg_color": "#FFEB9C", "num_format": "#,##0"})
+            fmt_first = workbook.add_format({
+                "bg_color": "#C6EFCE",
+                "font_color": "#006100",
+                "num_format": "#,##0"
+            })
 
-            # Format lagii
-            for col_idx, col_name in enumerate(df_to_write.columns):
+            fmt_second = workbook.add_format({
+                "bg_color": "#FFEB9C",
+                "font_color": "#9C6500",
+                "num_format": "#,##0"
+            })
+
+            # ===== COLUMN FORMAT =====
+            for col_idx, col_name in enumerate(df.columns):
                 if col_name in numeric_cols:
                     worksheet.set_column(col_idx, col_idx, 15, fmt_rupiah)
-                if "%" in col_name:
+                if col_name in pct_cols:
                     worksheet.set_column(col_idx, col_idx, 15, fmt_pct)
 
-            # Highlight
-            for row_idx, row in enumerate(df_to_write.itertuples(index=False), start=1):
+            # ===== LOOP DATA =====
+            for row_idx, row in enumerate(df.itertuples(index=False), start=1):
 
-                # Cek apakah baris TOTAL
                 is_total_row = any(
                     isinstance(x, str) and x.strip().upper() == "TOTAL"
                     for x in row
                     if pd.notna(x)
                 )
 
-                # Ambil nama 1st & 2nd vendor (jika sheet Bid & Price Analysis)
+                # Bid & Price vendor index
+                first_idx = second_idx = None
                 if sheet == "Bid & Price Analysis":
-                    first_vendor_name = row[df.columns.get_loc("1st Vendor")]
-                    second_vendor_name = row[df.columns.get_loc("2nd Vendor")]
+                    first_vendor  = row[df.columns.get_loc("1st Vendor")]
+                    second_vendor = row[df.columns.get_loc("2nd Vendor")]
 
-                    first_idx = df.columns.get_loc(first_vendor_name) if first_vendor_name in vendor_cols else None
-                    second_idx = df.columns.get_loc(second_vendor_name) if second_vendor_name in vendor_cols else None
+                    if first_vendor in numeric_cols:
+                        first_idx = df.columns.get_loc(first_vendor)
+                    if second_vendor in numeric_cols:
+                        second_idx = df.columns.get_loc(second_vendor)
 
-                # Loop tiap kolom → apply format
-                for col_idx, col_name in enumerate(df_to_write.columns):
+                for col_idx, col_name in enumerate(df.columns):
                     value = row[col_idx]
                     fmt = None
 
-                    # TOTAL row highlight
-                    if is_total_row and sheet != "Bid & Price Analysis":
+                    # ===== PICK FORMAT =====
+                    if sheet == "Bid & Price Analysis":
+                        if col_idx == first_idx:
+                            fmt = fmt_first
+                        elif col_idx == second_idx:
+                            fmt = fmt_second
+                    elif is_total_row:
                         fmt = fmt_total
 
-                    # Highlight 1st & 2nd vendor
-                    if sheet == "Bid & Price Analysis":
-                        if first_idx is not None and col_idx == first_idx:
-                            fmt = fmt_first
-                        elif second_idx is not None and col_idx == second_idx:
-                            fmt = fmt_second
-
-                    # Replace NaN/inf with empty string
+                    # ===== WRITE CELL (TYPE SAFE) =====
                     if pd.isna(value) or (isinstance(value, float) and np.isinf(value)):
                         worksheet.write_blank(row_idx, col_idx, None, fmt)
+
+                    elif col_name in pct_cols:
+                        worksheet.write_number(
+                            row_idx, col_idx, value, fmt or fmt_pct
+                        )
+
+                    elif col_name in numeric_cols:
+                        worksheet.write_number(
+                            row_idx, col_idx, value, fmt or fmt_rupiah
+                        )
+
                     else:
                         worksheet.write(row_idx, col_idx, value, fmt)
 
+            # ===== AUTOFIT =====
+            for i, col in enumerate(df.columns):
+                worksheet.set_column(
+                    i, i,
+                    max(len(str(col)), df[col].astype(str).map(len).max()) + 2
+                )
+
     output.seek(0)
-    return output
+    return output.getvalue()
 
 # ---- DOWNLOAD BUTTON ----
 if selected_sheets:
